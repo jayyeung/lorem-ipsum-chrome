@@ -14,7 +14,6 @@ class MainStore {
 
 	@action getLorem() {
 		const { paragraphs, words } = this.params;
-		console.log(this.generator.generate(paragraphs, words));
 		this.lorem = this.generator.generate(paragraphs, words);
 	}
 }

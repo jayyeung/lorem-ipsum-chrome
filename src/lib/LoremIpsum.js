@@ -10,13 +10,13 @@ export default class LoremIpsum {
 			const paragraph = this.generateParagraph(words);
 			output += paragraph + '\n\n';
 		}
-		return output;
+		return output.trim();
 	}
 
 	generateParagraph(words) {
 		const { capitalize, random, randomObj } = this;
 		const endSymbols = ['.', '…', '!', '?', ';'];
-		const minLength = 7, maxLength = 15;
+		const minLength = 8, maxLength = 15;
 
 		let sentenceLength = random(minLength, maxLength);
 		let maxCommas = random(0, words/sentenceLength);
