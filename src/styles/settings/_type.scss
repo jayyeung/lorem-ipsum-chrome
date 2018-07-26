@@ -1,0 +1,8 @@
+$type-base: 18px;
+$type-line-height: 1.556;
+
+$modularscale: (
+	base: $type-base,
+	ratio: 1.15
+);
+@import '~modularscale-sass/stylesheets/modularscale';
