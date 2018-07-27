@@ -1,0 +1,9 @@
+$type-base: 18px;
+$type-ratio: 1.2;
+
+$type-ms: (
+	base: $type-base,
+	ratio: $type-ratio
+);
+
+$modularscale: $type-ms;
