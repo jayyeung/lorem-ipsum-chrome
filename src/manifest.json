@@ -1,0 +1,22 @@
+{
+	"manifest_version": 2,
+
+	"name": "Lorem Clipsum",
+	"description": "Google Chrome extension for placeholder text.",
+	"version": "0.0.1",
+
+	"browser_action": {
+		"default_popup": "src/html/popup.html"
+	},
+
+	"background": {
+		"scripts": ["app/quickpaste.js"],
+		"persistent": false
+	},
+
+	"permissions": [
+		"contextMenus",
+		"activeTab",
+		"tabs"
+	]
+}

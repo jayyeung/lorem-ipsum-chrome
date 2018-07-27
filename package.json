@@ -1,19 +1,21 @@
 {
-  "name": "lorem-clipsum",
-  "version": "0.0.1",
-  "description": "Google Chrome extension for placeholder text.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jayyeung/lorem-ipsum-chrome.git"
-  },
-  "author": "Jason Yeung",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jayyeung/lorem-ipsum-chrome/issues"
-  },
-  "homepage": "https://github.com/jayyeung/lorem-ipsum-chrome#readme"
+	"name": "lorem-clipsum",
+	"version": "0.0.1",
+	"description": "Google Chrome extension for placeholder text.",
+	"author": "Jason Yeung",
+	"main": "src/app/main.js",
+	"scripts": {
+		"dev": "parcel watch src/app/main.js",
+		"build": "parcel build"
+	},
+	"dependencies": {
+		"react": "^16.4.1",
+		"react-dom": "^16.4.1"
+	},
+	"devDependencies": {
+		"babel-preset-env": "^1.7.0",
+		"babel-preset-react": "^6.24.1",
+		"parcel-bundler": "^1.9.7",
+		"node-sass": "^4.9.2"
+	}
 }
