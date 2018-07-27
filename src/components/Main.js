@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 
 import { LoremInput } from './LoremInput';
 
-@inject('MainStore')
+@inject('MainStore', 'ConfigStore')
 @observer
 export class Main extends Component {
 	copyArea = React.createRef()
@@ -39,10 +39,16 @@ export class Main extends Component {
 		this.props.MainStore.getLorem();
 	}
 
+	resetParams = () => {
+		this.props.MainStore.params = this.props.ConfigStore.defaultParams;
+		this.props.MainStore.getLorem();
+	}
+
 	render() {
 		return (
 			<div className='c-main'>
 				<LoremInput onParams={this.setParams}/>
+				<button onClick={this.resetParams}>Reset</button>
 				<button onClick={this.copySelected}>
 					{(this.state.customSelect) ? 'Copy Selected' : 'Copy All'}
 				</button>
@@ -52,8 +58,6 @@ export class Main extends Component {
 				onSelect={this.selectCopy}
 				value={this.props.MainStore.lorem}>
 				</textarea>
-
-				<button>Reset</button>
 			</div>
 		);
 	}
