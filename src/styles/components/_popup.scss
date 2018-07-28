@@ -1,4 +1,8 @@
-.c-popup {}
+.c-popup {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+}
 
 .c-popup__params {
 	padding: sp(16) sp(20) sp(16) sp(28) !important;
@@ -6,7 +10,7 @@
 
 .c-popup__textarea {
 	textarea {
-		padding: sp(52) 0;
+		padding: sp(60) 0 sp(52);
 		@extend .o-container, .o-container--main;
 		display: block;
 		min-height: 350px;
@@ -45,9 +49,10 @@
 		@extend .o-label, .o-label--small;
 
 		position: absolute;
-		top: sp(16);
+		top: sp(20);
 		left: sp(24);
 
+		background: #F9F9F9;
 		pointer-events: none;
 		opacity: 0.4;
 	}

@@ -47,5 +47,12 @@ storageArea.get('quick_paste_options', (data) => {
 });
 
 
+let open = false;
+chrome.browserAction.onClicked.addListener((tab) => {
+	alert('yes');
+	fetch(chrome.extension.getURL('/popup.html'))
+	.then((data) => {
+		document.body.innerHTML += data;
 
-
+	});
+});

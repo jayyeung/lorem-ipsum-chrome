@@ -5,18 +5,15 @@
 	"description": "Google Chrome extension for placeholder text.",
 	"version": "0.0.1",
 
-	"browser_action": {
-		"default_popup": "src/html/popup.html"
-	},
+	"browser_action": {},
 
 	"background": {
-		"scripts": ["app/quickpaste.js"],
-		"persistent": false
+		"scripts": ["scripts/background.js"]
 	},
 
 	"permissions": [
 		"contextMenus",
-		"activeTab",
-		"tabs"
+		"storage",
+		"activeTab", "http://*/*"
 	]
 }

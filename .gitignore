@@ -1,6 +1,6 @@
 # npm
 /node_modules
 
-# parcel
-**/*/build
+# gulp & parcel
+/dist
 /.cache
