@@ -1,8 +1,10 @@
 import gulp from 'gulp';
 
+import del from 'del';
+import connect from 'gulp-connect';
+
 import parcel from 'gulp-parcel';
 import uglify from 'gulp-uglify';
-import del from 'del';
 import sass from 'gulp-sass';
 
 const paths = {
@@ -55,11 +57,17 @@ const clean = () => (del([paths.dist]));
 const build = gulp.parallel(styles, app, scripts, misc);
 const watch = function() {
 	gulp.watch(paths.app.src, app);
-	gulp.watch(paths.styles.src, styles);
+	gulp.watch('src/styles/**/*.scss', styles);
 	gulp.watch(paths.scripts.src, scripts);
 	gulp.watch(paths.misc.src, misc);
 };
+const server = function() {
+	connect.server({
+		port: 8080
+	});
+};
 
+gulp.task('server', server);
 gulp.task('clean', clean);
 gulp.task('build', build);
-gulp.task('watch', watch);
+gulp.task('watch', gulp.parallel(watch, server));
