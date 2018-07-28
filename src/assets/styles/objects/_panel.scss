@@ -1,0 +1,16 @@
+.o-panel {
+	display: flex;
+	align-items: center;
+
+	padding: sp(8);
+	@extend .o-container;
+
+	border: 1px solid #E6E6E6;
+}
+
+.o-panel + .o-panel {
+	border-top: none;
+}
+
+.o-panel__fixed { flex: 0; }
+.o-panel__fluid { flex: 1; }

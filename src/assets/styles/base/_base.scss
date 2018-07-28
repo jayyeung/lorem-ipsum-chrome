@@ -1,7 +1,59 @@
+*, *:after, *:before {
+	box-sizing: border-box;
+}
+
+body { margin: 0; }
+
 // :root
 #app {
+	width: 475px;
 	font-size: ms(0);
-	font-family: 'Lora' !important;
+	font-family: 'Karla';
+	line-height: $type-line-height;
 
-	width: 500px;
+	color: #3D3D3D;
 }
+
+button, input, textarea {
+	@extend #app;
+	width: initial;
+	outline: none;
+}
+
+button {
+	background: #FF7675;
+	border: 1px solid darken(#FF7675, 20);
+	padding: sp(8) sp(16);
+	color: white;
+
+	font-size: ms(-2);
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+}
+
+input[type='number'] {
+	display: inline-block;
+	padding: sp(4) 0;
+
+	font-size: ms(2);
+	font-weight: bold;
+	text-align: center;
+
+	border: none;
+	background: #F6F6F6;
+	border-bottom: $baseline solid #E2E2E2;
+
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+  		-webkit-appearance: none;
+	}
+}
+
+textarea {
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+
