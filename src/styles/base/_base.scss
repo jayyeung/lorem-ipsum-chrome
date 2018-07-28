@@ -1,0 +1,13 @@
+:host {
+	font-size: 2rem;
+
+	position: fixed;
+	top: 1rem; right: 1rem;
+	z-index: 999;
+}
+
+#modal {
+	width: 400px;
+	height: 560px;
+	background: red;
+}
