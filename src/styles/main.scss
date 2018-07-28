@@ -1,15 +1,13 @@
-@import './lib/font';
-@import './lib/ms';
+:host {
+	font-size: 2rem;
 
-@import './settings/type';
-@import './settings/spacing';
+	position: fixed;
+	top: 1rem; right: 1rem;
+	z-index: 999;
+}
 
-@import './base/base';
-
-@import './objects/container';
-@import './objects/panel';
-@import './objects/link';
-@import './objects/label';
-
-@import './components/popup';
-
+#modal {
+	width: 500px;
+	height: 700px;
+	background: red;
+}
