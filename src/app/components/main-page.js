@@ -6,10 +6,10 @@ export default class MainPage extends Component {
 			<div class='c-modal-main'>
 				<div className='c-modal__panel u-pr-16'>
 					<div className='o-media__fluid'>
-						<input id='pgraphs' type='number' min='1' max='30'/>
+						<input id='pgraphs' type='number' min='1' max='15'/>
 						<label for='pgraphs' class='u-mr-28'>Paragraphs</label>
 
-						<input id='words' type='number' min='1' max='30'/>
+						<input id='words' type='number' min='1' max='500'/>
 						<label for='words'>Words each</label>
 					</div>
 
@@ -22,7 +22,7 @@ export default class MainPage extends Component {
 						<label for='include-p'>include &lt;p&gt; tags</label>
 					</div>
 
-					<button className='c-label c-label--link'>
+					<button className='c-modal-main__settings'>
 						Settings
 					</button>
 				</div>
