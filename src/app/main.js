@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 const styles = chrome.extension.getURL('main.css');
 import MainPage from './components/main-page';
+import SettingsPage from './components/settings-page';
 
 class Modal extends Component {
 	render() {
