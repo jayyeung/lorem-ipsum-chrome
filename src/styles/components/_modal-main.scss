@@ -1,0 +1,40 @@
+.c-modal-main {
+
+}
+
+.c-modal-main__textarea textarea {
+	padding: sp(-52) sp(-gutter) sp(-60);
+	font-family: font-get(secondary);
+	font-size: iota-ms(1);
+	min-height: 450px;
+	max-height: 500px;
+	color: color-get(text, light);
+}
+
+.c-modal-main__textarea {
+	position: relative;
+	// label
+	&:before {
+		@extend .c-label;
+		content: 'GENERATED PLACEHOLDER TEXT';
+		padding: sp(-16) sp(-gutter) 0;
+		position: absolute;
+		left: 0; right: 0;
+		top: 0;
+		opacity: 0.4;
+	}
+
+	// shadow
+	&:after {
+		content: '';
+		height: 4em;
+		position: absolute;
+		left: 0; right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			color-get(bg) 100%
+		);
+	}
+}

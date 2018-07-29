@@ -1,0 +1,27 @@
+// (baseline) / (font-size) = baseline in rems
+//  4px / 18px ~= 0.2rem
+$baseline: 0.2rem;
+$gutter: $baseline*7;
+
+$spacing: (
+	-gutter: $gutter,
+    -auto : auto,
+    -none : 0,
+    -4 : $baseline,
+    -8 : $baseline*2,
+    -12: $baseline*3,
+    -16: $baseline*4,
+    -20: $baseline*5,
+    -24: $baseline*6,
+    -28: $baseline*7,
+    -32: $baseline*8,
+    -40: $baseline*10,
+	-52: $baseline*13,
+	-60: $baseline*15
+);
+
+@function sp($step) {
+    @if map-has-key($spacing, $step) {
+        @return map-get($spacing, $step);
+	}
+}

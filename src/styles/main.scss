@@ -1,4 +1,7 @@
 @import 'settings/core';
+@import 'settings/type';
+@import 'settings/color';
+@import 'settings/spacing';
 
 @import 'tools/core';
 @import 'tools/breakpoint';
@@ -7,21 +10,26 @@
 
 @import 'base/initialize';
 @import 'base/base';
+@import 'base/type';
 
 @import 'objects/container';
 // @import 'objects/grid';
 @import 'objects/list';
 @import 'objects/media';
-@import 'objects/type';
+// @import 'objects/type';
+
+@import 'components/label';
+@import 'components/modal';
+@import 'components/modal-main';
 
 @import 'utilities/align-items';
 @import 'utilities/align';
 @import 'utilities/bgcolor';
-@import 'utilities/clearfix';
+// @import 'utilities/clearfix';
 @import 'utilities/color';
 @import 'utilities/display';
 @import 'utilities/flex-direction';
-@import 'utilities/float';
+// @import 'utilities/float';
 // @import 'utilities/justify-content';
 @import 'utilities/margin';
 @import 'utilities/opacity';

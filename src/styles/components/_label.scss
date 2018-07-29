@@ -1,0 +1,22 @@
+.c-label {
+	font-family: font-get(primary);
+	font-size: iota-ms(-2);
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.c-label--large {
+	font-size: iota-ms(-1);
+}
+
+.c-label--link {
+	padding: sp(-8) 0;
+	border: none;
+	background: none;
+	color: color-get(button, link);
+
+	transition: opacity 0.3s;
+	opacity: 0.7;
+	&:hover { opacity: 1; }
+}

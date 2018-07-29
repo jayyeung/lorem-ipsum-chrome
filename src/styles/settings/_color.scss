@@ -1,0 +1,29 @@
+@function color-get($palette, $tone:$palette) {
+    @return map-get(map-get($colors, $palette), $tone);
+}
+
+$colors: (
+	bg: (
+		bg: #F9F9F9,
+		border: #E6E6E6
+	),
+	text: (
+		light: #757474,
+		text: #3D3D3D,
+	),
+	button: (
+		button: #FF7675,
+		link: #6A8EB4,
+		selected: #3E6FE2
+	)
+);
+
+// Expand colors for iotacss u-color generator
+$colors-mapped: ();
+@each $color, $tones in $colors {
+    @each $tone, $value in $tones {
+        $key: $color;
+        @if ($tone != $color) { $key: $key+'-'+$tone; }
+        $colors-mapped: map-merge($colors-mapped, ($key: $value));
+    }
+}

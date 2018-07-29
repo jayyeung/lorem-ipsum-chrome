@@ -1,0 +1,10 @@
+.c-modal__panel {
+	@extend .o-media, .o-media--middle;
+	padding: sp(-16) sp(-gutter);
+	background: white;
+	border-bottom: 1px solid color-get(bg, border);
+}
+
+.c-modal__subtitle {
+	font-size: iota-ms(0);
+}

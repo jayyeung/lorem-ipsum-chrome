@@ -1,13 +1,114 @@
 :host {
-	font-size: 2rem;
-
 	position: fixed;
 	top: 1rem; right: 1rem;
 	z-index: 999;
+	font-size: 2rem;
 }
 
+*, *:after, *:before { box-sizing: border-box; }
+
 #modal {
-	width: 400px;
-	height: 560px;
-	background: red;
+	width: 480px;
+	background: color-get(bg);
+	border: 1px solid color-get(bg, border);
+	color: color-get(text);
 }
+
+textarea, button, input {
+	font-family: font-get(primary);
+	font-size: iota-ms(0);
+	line-height: $type-line-height;
+	color: color-get(text);
+	outline: none;
+}
+
+textarea {
+	display: block;
+	width: 100%;
+	border: none;
+	background: none;
+	resize: vertical;
+	overflow-y: scroll;
+}
+
+button {
+	@extend .c-label, .c-label--large;
+	display: inline-block;
+	padding: sp(-16) sp(-20);
+
+	color: white;
+	background: color-get(button);
+	border: 1px solid darken(color-get(button), 25);
+	cursor: pointer;
+}
+
+input[type='number'] {
+	font-size: iota-ms(1);
+	font-weight: bold;
+	width: 1.5rem;
+	background: none;
+	border: none;
+	border-bottom: $baseline solid rgba(color-get(text), 0.2);
+
+	transition: border-color 0.3s;
+	&:hover { border-color: rgba(color-get(button, link), 0.5); }
+	&:focus { border-color: color-get(button, link); }
+
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
+input[type='checkbox'] {
+	display: none;
+
+	& + label:after {
+		content: '';
+		position: absolute;
+		top: 0.3em; left: 0.15em;
+		width: 0.7em; height: 0.4em;
+		border: 0.1em solid white;
+		border-top: none; border-right: none;
+		transform: rotate(-45deg) scale(0);
+		transition: transform 0.2s;
+	}
+
+	& + label { position: relative; margin: 0; }
+	& + label:before {
+		content: '';
+		display: inline-block;
+		width: 1em; height: 1em;
+		margin-right: sp(-12);
+		vertical-align: middle;
+		border: $baseline/2 solid color-get(text, light);
+		border-radius: $baseline;
+		background: color-get(bg);
+		transition: all 0.1s;
+	}
+
+	&:hover + label:before { border-color: color-get(button, link);	}
+	&:checked {
+		& + label:before {
+			color: color-get(button, link);
+			background: currentColor;
+			border-color: currentcolor;
+		}
+
+		& + label:after {
+			transform: rotate(-45deg) scale(1);
+		}
+	}
+}
+
+label {
+	position: relative;
+	vertical-align: middle;
+	cursor: pointer;
+
+	font-weight: 500;
+	margin-left: sp(-12);
+	color: color-get(text, light);
+}
+

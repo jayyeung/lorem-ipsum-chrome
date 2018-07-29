@@ -1,0 +1,14 @@
+$type-base-font: 16px;
+$type-ratio: 1.15;
+$type-line-height: 1.5;
+
+$font: (
+	primary: 'HK Grotesk',
+	secondary: 'Lora'
+);
+
+@function font-get($val) {
+	@return map-get($font, $val);
+}
+
+@import url('https://fonts.googleapis.com/css?family=Karla|Lora:400,700');

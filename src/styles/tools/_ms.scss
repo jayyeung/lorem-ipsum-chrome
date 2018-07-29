@@ -4,7 +4,7 @@
  * Number
  */
 
-$iota-tools-ms-base: 15px;
+$iota-tools-ms-base: $type-base-font;
 
 
 /**
@@ -13,7 +13,7 @@ $iota-tools-ms-base: 15px;
  * Unitless Number
  */
 
-$iota-tools-ms-ratio: 1.2;
+$iota-tools-ms-ratio: $type-ratio;
 
 
 /**
@@ -23,7 +23,7 @@ $iota-tools-ms-ratio: 1.2;
  * Unitless Number
  */
 
-$iota-tools-ms-scale: 3;
+$iota-tools-ms-scale: 6;
 
 
 @import 'node_modules/iotacss/tools/ms';
