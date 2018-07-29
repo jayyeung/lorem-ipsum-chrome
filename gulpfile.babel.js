@@ -11,10 +11,12 @@ const paths = {
 	dist: 'dist',
 
 	app: {
-		src: 'src/app/main.js',
+		main: 'src/app/main.js',
+		src: 'src/app/**/*.js',
 	},
 	styles: {
-		src: 'src/styles/main.scss',
+		main: 'src/styles/main.scss',
+		src: 'src/styles/**/*.scss',
 	},
 	scripts: {
 		src: 'src/scripts/**/*.js',
@@ -32,13 +34,13 @@ function app() {
 		publicURL: './',
 		outDir: paths.dist
 	};
-	return gulp.src(paths.app.src, {read: false})
+	return gulp.src(paths.app.main, {read: false})
 		.pipe(parcel(styleSettings))
 		.pipe(gulp.dest(paths.dist));
 }
 
 function styles() {
-	return gulp.src(paths.styles.src)
+	return gulp.src(paths.styles.main)
 		.pipe(sass().on('error', sass.logError))
 		.pipe(gulp.dest(paths.dist));
 }
@@ -57,7 +59,7 @@ const clean = () => (del([paths.dist]));
 const build = gulp.parallel(styles, app, scripts, misc);
 const watch = function() {
 	gulp.watch(paths.app.src, app);
-	gulp.watch('src/styles/**/*.scss', styles);
+	gulp.watch(paths.styles.src, styles);
 	gulp.watch(paths.scripts.src, scripts);
 	gulp.watch(paths.misc.src, misc);
 };
