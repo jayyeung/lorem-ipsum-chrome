@@ -8,12 +8,17 @@
 	"browser_action": {},
 
 	"background": {
-		"scripts": ["scripts/background.js"]
+		"scripts": ["scripts/background.js"],
+		"persistent": false
 	},
 
 	"permissions": [
 		"contextMenus",
 		"storage",
 		"activeTab", "http://*/*"
+	],
+
+	"web_accessible_resources": [
+		"main.css"
 	]
 }
