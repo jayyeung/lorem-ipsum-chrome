@@ -1,7 +1,7 @@
 :host {
 	position: fixed;
 	top: 1rem; right: 1rem;
-	z-index: 999;
+	z-index: 999999;
 	font-size: 2rem;
 }
 
@@ -12,6 +12,8 @@
 	background: color-get(bg);
 	border: 1px solid color-get(bg, border);
 	color: color-get(text);
+	border-radius: $baseline;
+	box-shadow: 0 $baseline 12px rgba(#333, 0.2);
 }
 
 textarea, button, input {
@@ -31,6 +33,11 @@ textarea {
 	overflow-y: scroll;
 }
 
+::-webkit-resizer {
+	cursor: nwse-resize;
+	background: color-get(text);
+}
+
 button {
 	@extend .c-label, .c-label--large;
 	display: inline-block;
@@ -40,18 +47,22 @@ button {
 	background: color-get(button);
 	border: 1px solid darken(color-get(button), 25);
 	cursor: pointer;
+	transition: opacity 0.3s;
+	opacity: 0.8;
+	&:hover { opacity: 1; }
 }
 
 input[type='number'] {
+	width: 1.5rem;
+	text-align: center;
 	font-size: iota-ms(1);
 	font-weight: bold;
-	width: 1.5rem;
 	background: none;
 	border: none;
-	border-bottom: $baseline solid rgba(color-get(text), 0.2);
+	border-bottom: $baseline solid rgba(color-get(text), 0.3);
 
 	transition: border-color 0.3s;
-	&:hover { border-color: rgba(color-get(button, link), 0.5); }
+	&:hover { border-color: rgba(color-get(button, link), 0.7); }
 	&:focus { border-color: color-get(button, link); }
 
 	&::-webkit-outer-spin-button,
@@ -72,7 +83,7 @@ input[type='checkbox'] {
 		border: 0.1em solid white;
 		border-top: none; border-right: none;
 		transform: rotate(-45deg) scale(0);
-		transition: transform 0.2s;
+		transition: transform 0.3s;
 	}
 
 	& + label { position: relative; margin: 0; }

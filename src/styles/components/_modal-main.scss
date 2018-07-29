@@ -1,13 +1,26 @@
-.c-modal-main {
+.c-modal-main__copy:focus {
+	border: 1px solid green;
+}
 
+.c-modal-main__settings {
+	@extend .c-label, .c-label--link;
+	position: relative;
+	&:after {
+		content: '';
+		width: 100%;
+		height: $baseline/2;
+		position: absolute;
+		left: 0; bottom: -#{sp(-16)};
+		background: currentColor;
+	}
 }
 
 .c-modal-main__textarea textarea {
 	padding: sp(-52) sp(-gutter) sp(-60);
 	font-family: font-get(secondary);
 	font-size: iota-ms(1);
-	min-height: 450px;
-	max-height: 500px;
+	min-height: 45vh;
+	max-height: 70vh;
 	color: color-get(text, light);
 }
 
@@ -31,6 +44,7 @@
 		position: absolute;
 		left: 0; right: 0;
 		bottom: 0;
+		pointer-events: none;
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,
