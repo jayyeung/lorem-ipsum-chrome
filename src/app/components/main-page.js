@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
+@inject('routeStore')
+@observer
 export default class MainPage extends Component {
 	state = {
 		selectedCopy: false,
@@ -9,7 +12,7 @@ export default class MainPage extends Component {
 	textArea = React.createRef();
 	componentDidMount() {
 		// onSelect doesn't work with ShadowDOM due to
-		// event bubbling issues
+		// event bubbling issues — Manually adding event
 		(this.textArea).current.addEventListener('select', this.onSelectCopy);
 	}
 
@@ -30,6 +33,7 @@ export default class MainPage extends Component {
 		if (!this.state.selectedCopy)
 			(this.textArea).current.select();
 		document.execCommand('copy');
+		this.onUnselectCopy();
 	}
 
 	render() {
@@ -44,7 +48,8 @@ export default class MainPage extends Component {
 						<label htmlFor='words'>Words each</label>
 					</div>
 
-					<button className='c-modal-main__copy'
+					<button className={`c-modal-main__copy
+					${(this.state.selectedCopy) ? 'c-modal-main__copy--selected' : ''}`}
 					onClick={this.copyText}>
 						{(this.state.selectedCopy) ? 'Copy selected' : 'Copy all'}
 					</button>
@@ -56,7 +61,8 @@ export default class MainPage extends Component {
 						<label htmlFor='include-p'>include &lt;p&gt; tags</label>
 					</div>
 
-					<button className='c-modal-main__settings'>
+					<button className='c-modal-main__settings'
+					onClick={() => (this.props.routeStore).setRoute('/settings')}>
 						Settings
 					</button>
 				</div>

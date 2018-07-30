@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
+import { observable } from 'mobx';
+import { Provider, observer } from 'mobx-react';
 import ShadowDOM from 'react-shadow';
 import ReactDOM from 'react-dom';
 
 const styles = chrome.extension.getURL('main.css');
-import MainPage from './components/main-page';
-import SettingsPage from './components/settings-page';
+import Router from './components/router';
+import stores from './store';
 
+@observer
 class Modal extends Component {
 	render() {
 		return (
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
-					<div id='modal'>
-						<MainPage />
-					</div>
+					<Provider {...stores}>
+						<div id='modal'>
+							<Router/>
+						</div>
+					</Provider>
 				</div>
 			</ShadowDOM>
 		);
