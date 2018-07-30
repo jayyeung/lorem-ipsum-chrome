@@ -55,7 +55,7 @@ function misc() {
 	.pipe(gulp.dest(paths.dist));
 }
 
-const clean = () => (del([paths.dist]));
+const clean = () => (del([paths.dist, '.cache']));
 const build = gulp.parallel(styles, app, scripts, misc);
 const watch = function() {
 	gulp.watch(paths.app.src, app);
