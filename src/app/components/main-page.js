@@ -16,6 +16,10 @@ export default class MainPage extends Component {
 		(this.textArea).current.addEventListener('select', this.onSelectCopy);
 	}
 
+	componentWillUnmount() {
+		document.removeEventListener('select', this.onSelectCopy);
+	}
+
 	selectAllCopy = () => { (this.textArea).current.select(); }
 	onUnselectCopy = () => { this.setState({selectedCopy: false}); }
 
