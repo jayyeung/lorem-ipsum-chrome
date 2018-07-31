@@ -1,18 +1,10 @@
-.c-modal-main__copy:focus {
-	border: 1px solid green;
+.c-modal-main__copy--selected {
+	background: color-get(button, selected);
+	border-color: darken(color-get(button, selected), 20);
 }
 
 .c-modal-main__settings {
 	@extend .c-label, .c-label--link;
-	position: relative;
-	&:after {
-		content: '';
-		width: 100%;
-		height: $baseline/2;
-		position: absolute;
-		left: 0; bottom: -#{sp(-16)};
-		background: currentColor;
-	}
 }
 
 .c-modal-main__textarea textarea {
@@ -22,6 +14,12 @@
 	min-height: 45vh;
 	max-height: 70vh;
 	color: color-get(text, light);
+	transition: color 0.2s;
+}
+
+.c-modal-main__textarea--selected textarea {
+	transition: color 0.4s;
+	color: rgba(black, 0.2);
 }
 
 .c-modal-main__textarea {
@@ -30,11 +28,11 @@
 	&:before {
 		@extend .c-label;
 		content: 'GENERATED PLACEHOLDER TEXT';
-		padding: sp(-16) sp(-gutter) 0;
+		margin: sp(-16) sp(-gutter) 0;
 		position: absolute;
-		left: 0; right: 0;
-		top: 0;
+		left: 0; top: 0;
 		opacity: 0.4;
+		background: color-get(bg);
 	}
 
 	// shadow

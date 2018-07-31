@@ -5,9 +5,16 @@
 	border-bottom: 1px solid color-get(bg, border);
 }
 
+.c-modal__title {
+	font-size: iota-ms(1);
+	font-weight: bold;
+	padding: sp(-8) 0;
+}
+
 .c-modal__subtitle {
 	font-size: iota-ms(0);
 }
 
-#pgraphs { width: 1.25em; }
-#words { width: 1.75em; }
+.c-modal__container {
+	padding: sp(-20) sp(-gutter) sp(-40);
+}

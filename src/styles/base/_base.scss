@@ -8,12 +8,17 @@
 *, *:after, *:before { box-sizing: border-box; }
 
 #modal {
-	width: 480px;
+	width: 500px;
 	background: color-get(bg);
 	border: 1px solid color-get(bg, border);
 	color: color-get(text);
-	border-radius: $baseline;
-	box-shadow: 0 $baseline 12px rgba(#333, 0.2);
+
+	&.hidden { display: none; }
+}
+
+::selection {
+	background: color-get(button, selected);
+	color: lighten(color-get(button, selected), 37);
 }
 
 textarea, button, input {
@@ -41,25 +46,24 @@ textarea {
 button {
 	@extend .c-label, .c-label--large;
 	display: inline-block;
-	padding: sp(-16) sp(-20);
+	padding: sp(-8) sp(-20);
 
 	color: white;
 	background: color-get(button);
-	border: 1px solid darken(color-get(button), 25);
+	border: 1px solid darken(color-get(button), 15);
 	cursor: pointer;
-	transition: opacity 0.3s;
+	transition: opacity 0.3s, color 0.3s, background 0.3s;
 	opacity: 0.8;
 	&:hover { opacity: 1; }
 }
 
 input[type='number'] {
-	width: 1.5rem;
 	text-align: center;
 	font-size: iota-ms(1);
 	font-weight: bold;
-	background: none;
-	border: none;
-	border-bottom: $baseline solid rgba(color-get(text), 0.3);
+	background: color-get(bg);
+	border: 1px solid darken(color-get(bg), 20);
+	border-radius: $baseline;
 
 	transition: border-color 0.3s;
 	&:hover { border-color: rgba(color-get(button, link), 0.7); }
@@ -67,8 +71,7 @@ input[type='number'] {
 
 	&::-webkit-outer-spin-button,
 	&::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
+		opacity: 1;
 	}
 }
 
