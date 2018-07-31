@@ -6,7 +6,6 @@ import SettingsPage from './settings-page';
 
 const Router = inject('routeStore')(
 	observer(({routeStore}) => {
-		console.log(routeStore.currentRoute);
 		const route = routeStore.currentRoute;
 		switch(route) {
 			case '/settings':

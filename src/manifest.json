@@ -15,7 +15,7 @@
 	"permissions": [
 		"contextMenus",
 		"storage",
-		"activeTab", "http://*/*"
+		"activeTab"
 	],
 
 	"web_accessible_resources": [

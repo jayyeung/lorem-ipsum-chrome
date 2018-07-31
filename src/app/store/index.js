@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx';
+import settingsStore from './settings-store';
 
 class RouteStore {
 	@observable currentRoute = '';
@@ -10,4 +11,4 @@ class RouteStore {
 
 const routeStore = new RouteStore();
 
-export default { routeStore };
+export default { routeStore, settingsStore };

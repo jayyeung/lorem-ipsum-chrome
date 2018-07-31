@@ -17,11 +17,13 @@ class Modal extends Component {
 	}
 
 	render() {
+		const { visible } = this.state;
+
 		return (
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
 					<Provider {...stores}>
-						<div id='modal' style={{display: (!this.state.visible) ? 'none' : ''}}>
+						<div id='modal' className={(!visible) ? 'hidden' : ''}>
 							<Router/>
 						</div>
 					</Provider>

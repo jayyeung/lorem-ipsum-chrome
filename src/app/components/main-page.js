@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react';
 export default class MainPage extends Component {
 	state = {
 		selectedCopy: false,
-		copyOutput: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, debitis! Eligendi neque quisquam dignissimos est sit rerum soluta dolore ullam repellat vitae incidunt tenetur ex, aliquid delectus aliquam sed. Nisi, rerum deleniti. Beatae autem error atque accusantium quae, harum explicabo doloremque recusandae doloribus aliquam nisi sint quisquam maiores corporis voluptatem?'
+		copyOutput: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores officia rem nisi alias! Rerum expedita, dicta exercitationem iure soluta veniam esse praesentium corporis! Minima ipsam quasi eum commodi autem maiores nulla quo ex, numquam distinctio saepe quod dignissimos culpa quas. Fuga, fugit. Facere voluptatibus molestiae excepturi laudantium quis? Aliquam consectetur quam cumque iste cupiditate consequatur iure, aspernatur, numquam facilis nisi voluptatibus sed eveniet perferendis quae quibusdam deleniti repudiandae ab possimus. Aliquid eligendi omnis, consequatur veniam iste sequi similique nesciunt adipisci earum maxime cupiditate animi sapiente qui amet minima rerum. Quaerat ad, culpa quasi assumenda molestias explicabo recusandae officia esse nostrum facilis, saepe deserunt sunt animi expedita quam similique labore repellendus itaque eum? Consectetur quos molestias numquam nesciunt animi obcaecati, accusantium nulla asperiores! Sunt minima sint nulla suscipit. Minima veniam sed ea in dolor est maxime, blanditiis repudiandae sequi a odio, explicabo eos, quo illo aliquam animi eaque sit neque repellendus voluptatem. Optio nemo tempora cum blanditiis tempore dignissimos corrupti modi, reprehenderit deleniti consequuntur dolorem fuga ratione reiciendis pariatur nisi temporibus eaque quas nam soluta velit quis similique tenetur. Amet sapiente nesciunt, et atque blanditiis qui nihil perferendis temporibus, tempora, debitis iure deleniti similique modi labore. Numquam quidem itaque sint laudantium?'
 	};
 
 	textArea = React.createRef();
@@ -33,44 +33,49 @@ export default class MainPage extends Component {
 		if (!this.state.selectedCopy)
 			(this.textArea).current.select();
 		document.execCommand('copy');
-		this.onUnselectCopy();
 	}
 
 	render() {
+		const { routeStore } = this.props;
+		const { selectedCopy } = this.state;
+
 		return (
 			<div className='c-modal-main'>
 				<div className='c-modal__panel u-pr-16'>
 					<div className='o-media__fluid'>
 						<input id='pgraphs' type='number' min='1' max='15'/>
-						<label htmlFor='pgraphs' className='u-mr-28'>Paragraphs</label>
+						<label htmlFor='pgraphs' className='u-mr-20'>Paragraphs</label>
 
-						<input id='words' type='number' min='1' max='500'/>
-						<label htmlFor='words'>Words each</label>
+						<input id='words' type='number' min='1' max='500' step='50'/>
+						<label htmlFor='words'>Words</label>
 					</div>
 
 					<button className={`c-modal-main__copy
-					${(this.state.selectedCopy) ? 'c-modal-main__copy--selected' : ''}`}
+					${(selectedCopy) ? 'c-modal-main__copy--selected' : ''}`}
 					onClick={this.copyText}>
-						{(this.state.selectedCopy) ? 'Copy selected' : 'Copy all'}
+						{(selectedCopy) ? 'Copy select' : 'Copy all'}
 					</button>
 				</div>
 
-				<div className='c-modal__panel'>
+				<div className='c-modal__panel u-pv-12'>
 					<div className='o-media__fluid'>
 						<input id='include-p' type='checkbox'/>
 						<label htmlFor='include-p'>include &lt;p&gt; tags</label>
 					</div>
 
-					<button className='c-modal-main__settings'
-					onClick={() => (this.props.routeStore).setRoute('/settings')}>
+					<button className='c-modal-main__settings u-ph-12'
+					onClick={() => routeStore.setRoute('/settings')}>
 						Settings
 					</button>
 				</div>
 
-				<div className='c-modal-main__textarea'>
+				<div className={`c-modal-main__textarea
+					${(selectedCopy) ? 'c-modal-main__textarea--selected' : ''}`}>
+
 					<textarea readOnly spellCheck='false'
 					ref={this.textArea}
 					onFocus={this.selectAllCopy}
+					onBlur={() => setTimeout(this.onUnselectCopy, 125)}
 					onMouseUp={this.onUnselectCopy}
 					value={this.state.copyOutput}>
 					</textarea>
