@@ -10,6 +10,16 @@ import stores from './store';
 @observer
 class Modal extends Component {
 	state = { visible: true };
+	modal = React.createRef();
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.toggleModalBlur);
+	}
+
+	toggleModalBlur = (e) => {
+		if (this.modal && !this.modal.contains(e.target))
+			this.toggleModal();
+	}
 
 	toggleModal = () => {
 		const { visible } = this.state;
@@ -23,7 +33,8 @@ class Modal extends Component {
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
 					<Provider {...stores}>
-						<div id='modal' className={(!visible) ? 'hidden' : ''}>
+						<div id='modal' ref={this.modal}
+						className={(!visible) ? 'hidden' : ''}>
 							<Router/>
 						</div>
 					</Provider>
