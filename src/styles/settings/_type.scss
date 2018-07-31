@@ -3,8 +3,8 @@ $type-ratio: 1.15;
 $type-line-height: 1.5;
 
 $font: (
-	primary: 'HK Grotesk',
-	secondary: 'PT Serif'
+	primary: ('HK Grotesk', Helvetica, sans-serif),
+	secondary: ('PT Serif', serif)
 );
 
 @function font-get($val) {
