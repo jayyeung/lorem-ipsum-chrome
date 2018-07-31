@@ -1,12 +1,12 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 class SettingsStore {
 	constructor() {
 		this.loadSettings();
 	}
 
+	// Settings
 	@observable settings = {};
-	@observable changes = {};
 
 	loadSettings() {
 		chrome.storage.sync.get('changes', (data) => {
@@ -14,8 +14,19 @@ class SettingsStore {
 		});
 	}
 
-	@action commitChange(params = {}) {
-		this.changes = {...this.changes, ...params};
+	// Changes made to settings
+	@observable changes = {};
+
+	@action commitChange(key, value) {
+		this.changes[key] = value;
+	}
+
+	@action resetChanges() {
+		this.changes = {};
+	}
+
+	@computed get hasChanges() {
+		return Object.keys(this.changes).length > 0;		
 	}
 
 	@action saveChanges(callback) {
@@ -25,6 +36,7 @@ class SettingsStore {
 			changes: {...settings, ...changes}
 		}, () => {
 			this.loadSettings();
+			this.resetChanges();
 			if (callback) callback();
 		});
 	}
