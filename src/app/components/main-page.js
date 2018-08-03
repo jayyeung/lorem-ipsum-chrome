@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
-@inject('routeStore')
+import IpsumGenerator from '../lib/ipsum-generator';
+
+@inject('routeStore', 'settingsStore', 'closeModal')
 @observer
 export default class MainPage extends Component {
 	state = {
 		selectedCopy: false,
-		copyOutput: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores officia rem nisi alias! Rerum expedita, dicta exercitationem iure soluta veniam esse praesentium corporis! Minima ipsam quasi eum commodi autem maiores nulla quo ex, numquam distinctio saepe quod dignissimos culpa quas. Fuga, fugit. Facere voluptatibus molestiae excepturi laudantium quis? Aliquam consectetur quam cumque iste cupiditate consequatur iure, aspernatur, numquam facilis nisi voluptatibus sed eveniet perferendis quae quibusdam deleniti repudiandae ab possimus. Aliquid eligendi omnis, consequatur veniam iste sequi similique nesciunt adipisci earum maxime cupiditate animi sapiente qui amet minima rerum. Quaerat ad, culpa quasi assumenda molestias explicabo recusandae officia esse nostrum facilis, saepe deserunt sunt animi expedita quam similique labore repellendus itaque eum? Consectetur quos molestias numquam nesciunt animi obcaecati, accusantium nulla asperiores! Sunt minima sint nulla suscipit. Minima veniam sed ea in dolor est maxime, blanditiis repudiandae sequi a odio, explicabo eos, quo illo aliquam animi eaque sit neque repellendus voluptatem. Optio nemo tempora cum blanditiis tempore dignissimos corrupti modi, reprehenderit deleniti consequuntur dolorem fuga ratione reiciendis pariatur nisi temporibus eaque quas nam soluta velit quis similique tenetur. Amet sapiente nesciunt, et atque blanditiis qui nihil perferendis temporibus, tempora, debitis iure deleniti similique modi labore. Numquam quidem itaque sint laudantium?'
+		copyOutput: '',
+
+		// map default settings to state
+		...(this.props.settingsStore).settings
 	};
+
+	ipsumGenerator = new IpsumGenerator();
 
 	textArea = React.createRef();
 	componentDidMount() {
 		// onSelect doesn't work with ShadowDOM due to
 		// event bubbling issues — Manually adding event
 		(this.textArea).current.addEventListener('select', this.onSelectCopy);
+		document.addEventListener('copy', this.onCopy);
+		this.generateIpsum();
 	}
 
 	componentWillUnmount() {
 		document.removeEventListener('select', this.onSelectCopy);
+		document.removeEventListener('copy', this.onCopy);
 	}
 
+	// Ipsum functions
+	generateIpsum = () => {
+		const { paragraphs, words } = this.state;
+		const output = this.ipsumGenerator.generate(paragraphs, words);
+		this.setState({copyOutput: output});
+	}
+
+	inputChanged = ({target}) => {
+		if (this.state[target.name]) {
+			const value = Math.max(Math.min(target.value, target.max), target.min);
+			this.setState({[target.name]: value});
+			this.generateIpsum();
+		}
+	}
+
+	// Copy functions
 	selectAllCopy = () => { (this.textArea).current.select(); }
 	onUnselectCopy = () => { this.setState({selectedCopy: false}); }
 
@@ -34,23 +60,48 @@ export default class MainPage extends Component {
 	}
 
 	copyText = () => {
+		// if user not selecting any particular copy
 		if (!this.state.selectedCopy)
 			(this.textArea).current.select();
 		document.execCommand('copy');
 	}
 
+	onCopy = (e) => {
+		// check if copied text is from textarea
+		if (e.path[0] && (e.path[0] === (this.textArea).current)) {
+			e.preventDefault();
+			let copyText = window.getSelection().toString();
+
+			// if wants <p> tags
+			if (this.state['include-ptags'])
+				copyText = copyText.replace(/(.+?)(\n|$)+/g, '<p>$1</p>\n');
+
+			// auto close modal if selected option
+			if (this.state['auto-close'])
+				this.props.closeModal();
+
+			if (e.clipboardData)
+				e.clipboardData.setData('Text', copyText);
+		}
+	}
+
 	render() {
-		const { routeStore } = this.props;
-		const { selectedCopy } = this.state;
+		const { routeStore, settingsStore } = this.props;
+		const { selectedCopy, copyOutput } = this.state;
+		const settings = settingsStore.settings || {};
 
 		return (
 			<div className='c-modal-main'>
-				<div className='c-modal__panel u-pr-16'>
+				<div className='c-modal__panel u-pr-20'>
 					<div className='o-media__fluid'>
-						<input id='pgraphs' type='number' min='1' max='15'/>
-						<label htmlFor='pgraphs' className='u-mr-20'>Paragraphs</label>
+						<input id='pgraphs' type='number' min='0' max='10'
+						name='paragraphs' value={this.state.paragraphs}
+						onChange={this.inputChanged}/>
+						<label htmlFor='pgraphs'>Paragraphs</label>
 
-						<input id='words' type='number' min='1' max='500' step='50'/>
+						<input id='words' type='number' min='0' max='500' step='50'
+						name='words' value={this.state.words}
+						onChange={this.inputChanged}/>
 						<label htmlFor='words'>Words</label>
 					</div>
 
@@ -63,8 +114,9 @@ export default class MainPage extends Component {
 
 				<div className='c-modal__panel u-pv-12'>
 					<div className='o-media__fluid'>
-						<input id='include-p' type='checkbox'/>
-						<label htmlFor='include-p'>include &lt;p&gt; tags</label>
+						<input id='include-p' type='checkbox'
+						defaultChecked={settings['include-ptags']}/>
+						<label htmlFor='include-p' className='u-mr-32'>include &lt;p&gt; tags</label>
 					</div>
 
 					<button className='c-modal-main__settings u-ph-12'
@@ -76,12 +128,14 @@ export default class MainPage extends Component {
 				<div className={`c-modal-main__textarea
 					${(selectedCopy) ? 'c-modal-main__textarea--selected' : ''}`}>
 
+					<div className='c-modal-main__label'>Generated Parargraphs</div>
+
 					<textarea readOnly spellCheck='false'
 					ref={this.textArea}
 					onFocus={this.selectAllCopy}
 					onBlur={() => setTimeout(this.onUnselectCopy, 125)}
 					onMouseUp={this.onUnselectCopy}
-					value={this.state.copyOutput}>
+					value={copyOutput}>
 					</textarea>
 				</div>
 			</div>
