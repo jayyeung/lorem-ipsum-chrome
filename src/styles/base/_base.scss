@@ -1,19 +1,26 @@
 :host {
 	position: fixed;
 	top: 1rem; right: 1rem;
-	z-index: 999999;
+	z-index: 9999999;
 	font-size: 2rem;
 }
 
 *, *:after, *:before { box-sizing: border-box; }
 
 #modal {
-	width: 500px;
+	width: 520px;
 	background: color-get(bg);
 	border: 1px solid color-get(bg, border);
 	color: color-get(text);
 
 	&.hidden { display: none; }
+}
+
+#overlay {
+	position: fixed;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
+	z-index: -1;
 }
 
 ::selection {
@@ -131,5 +138,7 @@ label {
 	font-weight: 500;
 	margin-left: sp(-12);
 	color: color-get(text, light);
+
+	& + input { margin-left: sp(-16); }
 }
 

@@ -25,14 +25,23 @@
 .c-modal-main__textarea {
 	position: relative;
 	// label
-	&:before {
+	.c-modal-main__label {
 		@extend .c-label;
 		content: 'GENERATED PLACEHOLDER TEXT';
 		margin: sp(-16) sp(-gutter) 0;
 		position: absolute;
 		left: 0; top: 0;
-		opacity: 0.4;
-		background: color-get(bg);
+		z-index: 100;
+
+		&:before {
+			content: '';
+			position: absolute;
+			left: -#{sp(-8)}; right: -#{sp(-8)};
+			top: -#{sp(-8)}; bottom: -#{sp(-8)};
+			background: rgba(color-get(bg), 0.9);
+			filter: blur(8px);
+			z-index: -1;
+		}
 	}
 
 	// shadow
