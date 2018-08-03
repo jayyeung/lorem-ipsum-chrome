@@ -12,18 +12,18 @@ class Modal extends Component {
 	state = { visible: true };
 	modal = React.createRef();
 
-	componentDidMount() {
-		document.addEventListener('mousedown', this.toggleModalBlur);
-	}
-
-	toggleModalBlur = (e) => {
-		if (this.modal && !this.modal.contains(e.target))
-			this.toggleModal();
+	hideModalBlur = ({target}) => {
+		if (!(this.modal).current.contains(target))
+			this.setState({visible: false});
 	}
 
 	toggleModal = () => {
 		const { visible } = this.state;
 		this.setState({visible: !visible});
+	}
+
+	closeModal = () => {
+		this.setState({visible: false});
 	}
 
 	render() {
@@ -32,10 +32,10 @@ class Modal extends Component {
 		return (
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
-					<Provider {...stores}>
-						<div id='modal' ref={this.modal}
-						className={(!visible) ? 'hidden' : ''}>
+					<Provider {...stores} closeModal={this.closeModal}>
+						<div id='modal' className={(!visible) ? 'hidden' : ''}>
 							<Router/>
+							<div id='overlay' onClick={this.toggleModal}></div>
 						</div>
 					</Provider>
 				</div>
