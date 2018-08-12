@@ -15,19 +15,34 @@ export default class MainPage extends Component {
 	};
 
 	ipsumGenerator = new IpsumGenerator();
-
 	textArea = React.createRef();
+
+	/*
+	componentWillMount() {
+		// load any sessional settings
+		chrome.storage.local.get('session', (data) => {
+			this.setState({ ...data.session });
+		});
+	}
+	*/
+
 	componentDidMount() {
 		// onSelect doesn't work with ShadowDOM due to
 		// event bubbling issues — Manually adding event
 		(this.textArea).current.addEventListener('select', this.onSelectCopy);
 		document.addEventListener('copy', this.onCopy);
+
 		this.generateIpsum();
+		this.selectAllCopy();
 	}
 
 	componentWillUnmount() {
+		// remove listeners
 		document.removeEventListener('select', this.onSelectCopy);
 		document.removeEventListener('copy', this.onCopy);
+
+		// save sessional settings
+		// chrome.storage.local.set({session: this.state});
 	}
 
 	// Ipsum functions
@@ -38,10 +53,18 @@ export default class MainPage extends Component {
 	}
 
 	inputChanged = ({target}) => {
-		if (this.state[target.name]) {
-			const value = Math.max(Math.min(target.value, target.max), target.min);
-			this.setState({[target.name]: value});
-			this.generateIpsum();
+		if (typeof(this.state[target.name]) !== 'undefined') {
+			let value = (typeof(target.checked) !== 'undefined') ?
+				target.checked : target.value;
+
+			if (target.type === 'number') {
+				value = Math.max(Math.min(target.value, target.max), target.min);
+				this.setState({
+					[target.name]: value
+				},
+				this.generateIpsum);
+
+			} else this.setState({[target.name]: value});
 		}
 	}
 
@@ -62,7 +85,7 @@ export default class MainPage extends Component {
 	copyText = () => {
 		// if user not selecting any particular copy
 		if (!this.state.selectedCopy)
-			(this.textArea).current.select();
+			this.selectAllCopy();
 		document.execCommand('copy');
 	}
 
@@ -71,6 +94,9 @@ export default class MainPage extends Component {
 		if (e.path[0] && (e.path[0] === (this.textArea).current)) {
 			e.preventDefault();
 			let copyText = window.getSelection().toString();
+
+			// uppercase first letter
+			copyText = copyText.charAt(0).toUpperCase() + copyText.substr(1);
 
 			// if wants <p> tags
 			if (this.state['include-ptags'])
@@ -86,21 +112,20 @@ export default class MainPage extends Component {
 	}
 
 	render() {
-		const { routeStore, settingsStore } = this.props;
+		const { routeStore } = this.props;
 		const { selectedCopy, copyOutput } = this.state;
-		const settings = settingsStore.settings || {};
 
 		return (
 			<div className='c-modal-main'>
 				<div className='c-modal__panel u-pr-20'>
 					<div className='o-media__fluid'>
-						<input id='pgraphs' type='number' min='0' max='10'
-						name='paragraphs' value={this.state.paragraphs}
+						<input id='pgraphs' type='number' min='1' max='10'
+						name='paragraphs' value={this.state['paragraphs']}
 						onChange={this.inputChanged}/>
 						<label htmlFor='pgraphs'>Paragraphs</label>
 
-						<input id='words' type='number' min='0' max='500' step='50'
-						name='words' value={this.state.words}
+						<input id='words' type='number' min='1' max='500' step='50'
+						name='words' value={this.state['words']}
 						onChange={this.inputChanged}/>
 						<label htmlFor='words'>Words</label>
 					</div>
@@ -114,8 +139,8 @@ export default class MainPage extends Component {
 
 				<div className='c-modal__panel u-pv-12'>
 					<div className='o-media__fluid'>
-						<input id='include-p' type='checkbox'
-						defaultChecked={settings['include-ptags']}/>
+						<input id='include-p' type='checkbox' name='include-ptags'
+						defaultChecked={this.state['include-ptags']} onClick={this.inputChanged}/>
 						<label htmlFor='include-p' className='u-mr-32'>include &lt;p&gt; tags</label>
 					</div>
 
@@ -128,7 +153,7 @@ export default class MainPage extends Component {
 				<div className={`c-modal-main__textarea
 					${(selectedCopy) ? 'c-modal-main__textarea--selected' : ''}`}>
 
-					<div className='c-modal-main__label'>Generated Parargraphs</div>
+					<div className='c-modal-main__label'>Generated Paragraphs</div>
 
 					<textarea readOnly spellCheck='false'
 					ref={this.textArea}
