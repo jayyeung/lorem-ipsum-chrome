@@ -56,30 +56,6 @@ export default class LoremIpsumGenerator {
 	capitalize(word) {
 		return (word) ? word[0].toUpperCase() + word.substr(1) : '';
 	}
-
-	filter(settings) {
-
-	}
 }
 
-
-/*
-import loremIpsum from 'lorem-ipsum';
-
-// TO-DO
-// Finish generator, replace npm lorem-ipsum
-const IpsumGenerator = (paragraphs, words) => {
-	let output = '';
-	for (let i = 0; i < paragraphs-1; i++) {
-		output += loremIpsum({
-			units: 'words',
-			count: words
-		})
-		if (i+1 !== paragraphs) output += '\n\n';
-	}
-	return output;
-}
-
-export default IpsumGenerator;
-*/
 
