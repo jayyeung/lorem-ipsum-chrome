@@ -8,11 +8,12 @@
 }
 
 .c-modal-main__textarea textarea {
-	padding: sp(-52) sp(-gutter) sp(-60);
-	font-family: font-get(secondary);
-	font-size: iota-ms(1);
+	height: 60vh;
 	min-height: 45vh;
 	max-height: 70vh;
+	padding: sp(-40) sp(-gutter) sp(-52);
+	font-family: font-get(secondary);
+	font-size: iota-ms(1);
 	color: color-get(text, light);
 	transition: color 0.2s;
 }
@@ -27,11 +28,11 @@
 	// label
 	.c-modal-main__label {
 		@extend .c-label;
-		content: 'GENERATED PLACEHOLDER TEXT';
 		margin: sp(-16) sp(-gutter) 0;
 		position: absolute;
 		left: 0; top: 0;
 		z-index: 100;
+		color: color-get(text, light);
 
 		&:before {
 			content: '';

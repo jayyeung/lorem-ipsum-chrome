@@ -24,8 +24,8 @@
 }
 
 ::selection {
-	background: color-get(button, selected);
-	color: lighten(color-get(button, selected), 37);
+	background: rgba(color-get(button, selected), 0.2);
+	color: color-get(text);
 }
 
 textarea, button, input {
@@ -61,7 +61,7 @@ button {
 	cursor: pointer;
 	transition: opacity 0.3s, color 0.3s, background 0.3s;
 	opacity: 0.8;
-	&:hover { opacity: 1; }
+	&:hover, &:focus { opacity: 1; }
 
 	&:disabled {
 		border-color: color-get(text, light);
