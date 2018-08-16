@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Provider, observer } from 'mobx-react';
+
 import ShadowDOM from 'react-shadow';
 import ReactDOM from 'react-dom';
 
 const styles = chrome.extension.getURL('main.css');
+import Anims from './lib/animations';
 import Router from './components/router';
 import stores from './store';
 
@@ -12,30 +14,33 @@ class Modal extends Component {
 	state = { visible: true };
 	modal = React.createRef();
 
+	componentDidMount() {
+		// close modal on click outside
+		document.addEventListener('click', this.hideModalBlur);
+	}
+
 	hideModalBlur = ({target}) => {
-		if (!(this.modal).current.contains(target))
-			this.setState({visible: false});
+		if (!this.state.visible) return;
+		if (!(target.id === 'shadow-dom'))
+			this.closeModal();
 	}
 
-	toggleModal = () => {
+	toggleModal = (isVisible) => {
 		const { visible } = this.state;
-		this.setState({visible: !visible});
+		const value = (typeof(isVisible) !== 'undefined') ? isVisible : !visible;
+		this.setState({visible: value});
+		Anims.modalToggle(this.modal.current, value);
 	}
 
-	closeModal = () => {
-		this.setState({visible: false});
-	}
+	closeModal = () => { this.toggleModal(false); }
 
 	render() {
-		const { visible } = this.state;
-
 		return (
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
 					<Provider {...stores} closeModal={this.closeModal}>
-						<div id='modal' className={(!visible) ? 'hidden' : ''}>
+						<div id='modal' ref={this.modal}>
 							<Router/>
-							<div id='overlay' onClick={this.toggleModal}></div>
 						</div>
 					</Provider>
 				</div>
