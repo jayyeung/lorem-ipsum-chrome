@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
 import IpsumGenerator from '../lib/ipsum-generator';
+import Anims from '../lib/animations';
 
 @inject('routeStore', 'settingsStore', 'closeModal')
 @observer
@@ -70,8 +71,13 @@ export default class MainPage extends Component {
 
 	// Copy functions
 	selectAllCopy = () => { (this.textArea).current.select(); }
-	onUnselectCopy = () => { this.setState({selectedCopy: false}); }
+	unselectCopy = () => {
+		if (window.getSelection)
+			window.getSelection().removeAllRanges();
+		this.onUnselectCopy();
+	}
 
+	onUnselectCopy = () => { this.setState({selectedCopy: false}); }
 	onSelectCopy = ({target}) => {
 		const copyLen = (this.state.copyOutput).length;
 		const selStart = target.selectionStart;
@@ -102,12 +108,16 @@ export default class MainPage extends Component {
 			if (this.state['include-ptags'])
 				copyText = copyText.replace(/(.+?)(\n|$)+/g, '<p>$1</p>\n');
 
-			// auto close modal if selected option
-			if (this.state['auto-close'])
-				this.props.closeModal();
-
 			if (e.clipboardData)
 				e.clipboardData.setData('Text', copyText);
+
+			// auto close modal if selected option
+			let cb = null;
+			if (this.state['auto-close'])
+				cb = this.props.closeModal;
+
+			// blink animation
+			Anims.blink(this.textArea.current, cb);
 		}
 	}
 
@@ -158,7 +168,7 @@ export default class MainPage extends Component {
 					<textarea readOnly spellCheck='false'
 					ref={this.textArea}
 					onFocus={this.selectAllCopy}
-					onBlur={() => setTimeout(this.onUnselectCopy, 125)}
+					onBlur={() => setTimeout(this.unselectCopy, 125)}
 					onMouseUp={this.onUnselectCopy}
 					value={copyOutput}>
 					</textarea>
