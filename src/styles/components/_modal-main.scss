@@ -1,3 +1,7 @@
+.c-modal-main__copy {
+	padding: sp(-12) sp(-20);
+}
+
 .c-modal-main__copy--selected {
 	background: color-get(button, selected);
 	border-color: darken(color-get(button, selected), 20);
@@ -5,22 +9,30 @@
 
 .c-modal-main__settings {
 	@extend .c-label, .c-label--link;
+	padding: sp(-8) sp(-12);
+	border-radius: 100px;
+	border: 1px solid color-get(button, link);
 }
 
 .c-modal-main__textarea textarea {
-	height: 60vh;
+	height: 50vh;
 	min-height: 45vh;
 	max-height: 70vh;
-	padding: sp(-40) sp(-gutter) sp(-52);
+	padding: sp(-52) sp(-gutter) sp(-32);
 	font-family: font-get(secondary);
 	font-size: iota-ms(1);
-	color: color-get(text, light);
+	color: color-get(text);
 	transition: color 0.2s;
+
+	background: linear-gradient(
+		color-get(bg, alt) 1px,
+		transparent 1px
+	) left top / 1px $baseline*5;
 }
 
 .c-modal-main__textarea--selected textarea {
 	transition: color 0.4s;
-	color: rgba(black, 0.2);
+	color: rgba(black, 0.25);
 }
 
 .c-modal-main__textarea {
@@ -32,31 +44,23 @@
 		position: absolute;
 		left: 0; top: 0;
 		z-index: 100;
-		color: color-get(text, light);
-
-		&:before {
-			content: '';
-			position: absolute;
-			left: -#{sp(-8)}; right: -#{sp(-8)};
-			top: -#{sp(-8)}; bottom: -#{sp(-8)};
-			background: rgba(color-get(bg), 0.9);
-			filter: blur(8px);
-			z-index: -1;
-		}
+		color: color-get(text, lighter);
 	}
 
 	// shadow
+	/*
 	&:after {
 		content: '';
-		height: 4em;
+		height: 5em;
 		position: absolute;
 		left: 0; right: 0;
-		bottom: 0;
+		top: 0;
 		pointer-events: none;
 		background: linear-gradient(
-			to bottom,
+			to top,
 			transparent 0%,
 			color-get(bg) 100%
 		);
 	}
+	*/
 }

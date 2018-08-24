@@ -8,24 +8,18 @@
 *, *:after, *:before { box-sizing: border-box; }
 
 #modal {
-	width: 520px;
+	width: 540px;
 	background: color-get(bg);
 	border: 1px solid color-get(bg, border);
 	color: color-get(text);
+	// box-shadow: 0 $baseline 12px rgba(black, 0.1);
 
 	&.hidden { display: none; }
 }
 
-#overlay {
-	position: fixed;
-	left: 0; right: 0;
-	top: 0; bottom: 0;
-	z-index: -1;
-}
-
 ::selection {
-	background: rgba(color-get(button, selected), 0.2);
-	color: color-get(text);
+	background: rgba(color-get(button, selected), 0.25);
+	color: rgba(color-get(text), 0.7);
 }
 
 textarea, button, input {
@@ -47,7 +41,7 @@ textarea {
 
 ::-webkit-resizer {
 	cursor: nwse-resize;
-	background: color-get(text);
+	background: color-get(text, light);
 }
 
 button {
@@ -77,7 +71,6 @@ input[type='number'] {
 	font-weight: bold;
 	background: color-get(bg);
 	border: 1px solid darken(color-get(bg), 20);
-	border-radius: $baseline;
 
 	transition: border-color 0.3s;
 	&:hover { border-color: rgba(color-get(button, link), 0.7); }
@@ -110,8 +103,7 @@ input[type='checkbox'] {
 		width: 1em; height: 1em;
 		margin-right: sp(-12);
 		vertical-align: middle;
-		border: $baseline/2 solid color-get(text, light);
-		border-radius: $baseline;
+		border: 1px solid color-get(text, light);
 		background: color-get(bg);
 		transition: all 0.1s;
 	}
@@ -135,6 +127,7 @@ label {
 	vertical-align: middle;
 	cursor: pointer;
 
+	font-size: ms(-1);
 	font-weight: 500;
 	margin-left: sp(-12);
 	color: color-get(text, light);

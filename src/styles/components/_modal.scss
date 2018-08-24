@@ -1,6 +1,6 @@
 .c-modal__panel {
 	@extend .o-media, .o-media--middle;
-	padding: sp(-16) sp(-gutter);
+	padding: sp(-12) sp(-gutter);
 	background: color-get(bg, alt);
 	border-bottom: 1px solid color-get(bg, border);
 }
@@ -16,5 +16,5 @@
 }
 
 .c-modal__container {
-	padding: sp(-20) sp(-gutter) sp(-40);
+	padding: sp(-20) sp(-gutter) sp(-28);
 }

@@ -4,11 +4,11 @@ $type-line-height: 1.5;
 
 $font: (
 	primary: ('HK Grotesk', Helvetica, sans-serif),
-	secondary: ('PT Serif', serif)
+	secondary: ('HK Grotesk', Helvetica, sans-serif)
 );
 
 @function font-get($val) {
 	@return map-get($font, $val);
 }
 
-@import url('https://fonts.googleapis.com/css?family=PT+Serif');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans');
