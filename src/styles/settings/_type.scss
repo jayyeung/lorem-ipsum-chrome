@@ -11,4 +11,4 @@ $font: (
 	@return map-get($font, $val);
 }
 
-@import url('https://fonts.googleapis.com/css?family=Work+Sans');
+@import '../../assets/fonts/fonts';

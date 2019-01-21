@@ -2,23 +2,23 @@
 	position: fixed;
 	top: 1rem; right: 1rem;
 	z-index: 9999999;
-	font-size: 2rem;
+	font-size: 1rem;
 }
 
 *, *:after, *:before { box-sizing: border-box; }
 
 #modal {
-	width: 540px;
+	min-width: 540px;
 	background: color-get(bg);
 	border: 1px solid color-get(bg, border);
 	color: color-get(text);
-	// box-shadow: 0 $baseline 12px rgba(black, 0.1);
+	box-shadow: 0 $baseline 12px rgba(black, 0.1);
 
 	&.hidden { display: none; }
 }
 
 ::selection {
-	background: rgba(color-get(button, selected), 0.25);
+	background: rgba(color-get(button, selected), 0.5);
 	color: rgba(color-get(text), 0.7);
 }
 
