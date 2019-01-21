@@ -1,10 +1,10 @@
 import gulp from 'gulp';
+import { development as dev, production as prod } from 'gulp-environments';
 
 import del from 'del';
 import connect from 'gulp-connect';
-
 import parcel from 'gulp-parcel';
-import uglify from 'gulp-uglify';
+import uglify from 'gulp-uglify-es';
 import sass from 'gulp-sass';
 
 const paths = {
@@ -23,30 +23,35 @@ const paths = {
 	},
 	misc: {
 		src: [
-			'src/assets',
+			'src/assets/**/*',
 			'src/manifest.json'
 		]
 	}
 };
 
 function app() {
-	const styleSettings = {
+	const appSettings = {
 		publicURL: './',
 		outDir: paths.dist
 	};
 	return gulp.src(paths.app.main, {read: false})
-		.pipe(parcel(styleSettings))
+		.pipe(parcel(appSettings))
 		.pipe(gulp.dest(paths.dist));
 }
 
 function styles() {
+	const styleSettings = {
+		outputStyle: (prod()) ? "compressed" : "nested"
+	};
+
 	return gulp.src(paths.styles.main)
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass(styleSettings).on('error', sass.logError))
 		.pipe(gulp.dest(paths.dist));
 }
 
 function scripts() {
 	return gulp.src(paths.scripts.src)
+		.pipe(prod(uglify()))
 		.pipe(gulp.dest(paths.dist + '/scripts'));
 }
 

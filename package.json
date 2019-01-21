@@ -1,12 +1,12 @@
 {
 	"name": "lorem-clipsum",
 	"version": "0.0.1",
-	"description": "Google Chrome extension for placeholder text.",
+	"description": "A simple Google Chrome extension for generating placeholder text.",
 	"author": "Jason Yeung",
 	"main": "src/app/main.js",
 	"scripts": {
 		"dev": "gulp clean && gulp build && gulp watch",
-		"build": "gulp clean build"
+		"build": "gulp clean && gulp build --env production"
 	},
 	"dependencies": {
 		"gsap": "^2.0.1",
@@ -27,10 +27,11 @@
 		"del": "^3.0.0",
 		"gulp": "^4.0.0",
 		"gulp-connect": "^5.5.0",
+		"gulp-environments": "^0.1.2",
 		"gulp-parcel": "^0.3.5",
 		"gulp-plumber": "^1.2.0",
 		"gulp-sass": "^4.0.1",
-		"gulp-uglify": "^3.0.1",
+		"gulp-uglify-es": "^1.0.4",
 		"iotacss": "^1.6.0",
 		"modularscale-sass": "^3.0.5",
 		"node-sass": "^4.9.2",
