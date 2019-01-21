@@ -6,6 +6,7 @@ class SettingsStore {
 	}
 
 	// Default Settings
+	@observable loaded = false;
 	@observable settings = {
 		paragraphs: 3,
 		words: 100,
@@ -14,8 +15,10 @@ class SettingsStore {
 	};
 
 	loadSettings() {
+		this.loaded = false;
 		chrome.storage.sync.get('settings', (data) => {
-			if (data) this.settings = data.settings;
+			if (data.settings) this.settings = data.settings;
+			this.loaded = true;
 		});
 	}
 

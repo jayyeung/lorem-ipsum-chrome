@@ -22,7 +22,7 @@ class Modal extends Component {
 	hideModalBlur = ({target}) => {
 		if (!this.state.visible) return;
 		if (!(target.id === 'shadow-dom'))
-			this.closeModal();
+			this.toggleModal(false);
 	}
 
 	toggleModal = (isVisible) => {
@@ -32,13 +32,11 @@ class Modal extends Component {
 		Anims.modalToggle(this.modal.current, value);
 	}
 
-	closeModal = () => { this.toggleModal(false); }
-
 	render() {
 		return (
 			<ShadowDOM include={[styles]}>
 				<div id='shadow-dom'>
-					<Provider {...stores} closeModal={this.closeModal}>
+					<Provider {...stores} toggleModal={this.toggleModal}>
 						<div id='modal' ref={this.modal}>
 							<Router/>
 						</div>

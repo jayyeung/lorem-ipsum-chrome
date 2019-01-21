@@ -4,28 +4,18 @@ import { inject, observer } from 'mobx-react';
 import IpsumGenerator from '../lib/ipsum-generator';
 import Anims from '../lib/animations';
 
-@inject('routeStore', 'settingsStore', 'closeModal')
+@inject('routeStore', 'settingsStore', 'toggleModal')
 @observer
 export default class MainPage extends Component {
 	state = {
 		selectedCopy: false,
 		copyOutput: '',
 
-		// map default settings to state
 		...(this.props.settingsStore).settings
 	};
 
 	ipsumGenerator = new IpsumGenerator();
 	textArea = React.createRef();
-
-	/*
-	componentWillMount() {
-		// load any sessional settings
-		chrome.storage.local.get('session', (data) => {
-			this.setState({ ...data.session });
-		});
-	}
-	*/
 
 	componentDidMount() {
 		// onSelect doesn't work with ShadowDOM due to
@@ -33,17 +23,26 @@ export default class MainPage extends Component {
 		(this.textArea).current.addEventListener('select', this.onSelectCopy);
 		document.addEventListener('copy', this.onCopy);
 
-		this.generateIpsum();
-		this.selectAllCopy();
+		// load settings
+		const checkSettings = setInterval(() => {
+			let settingsStore = this.props.settingsStore;
+			if (!settingsStore.loaded) return;
+			clearInterval(checkSettings);
+			this.setState({...settingsStore.settings});
+			this.generateIpsum();
+			this.selectAllCopy();
+		}, 100);
+
+		// select text on modal open
+		chrome.runtime.onMessage.addListener((msg, sender, res) => {
+			if (msg.INJECT) setTimeout(this.selectAllCopy, 100);
+		});
 	}
 
 	componentWillUnmount() {
 		// remove listeners
 		document.removeEventListener('select', this.onSelectCopy);
 		document.removeEventListener('copy', this.onCopy);
-
-		// save sessional settings
-		// chrome.storage.local.set({session: this.state});
 	}
 
 	// Ipsum functions
@@ -68,6 +67,8 @@ export default class MainPage extends Component {
 			} else this.setState({[target.name]: value});
 		}
 	}
+
+	inputSelect = ({target}) => {target.select();}
 
 	// Copy functions
 	selectAllCopy = () => { (this.textArea).current.select(); }
@@ -106,7 +107,7 @@ export default class MainPage extends Component {
 
 			// if wants <p> tags
 			if (this.state['include-ptags'])
-				copyText = copyText.replace(/(.+?)(\n|$)+/g, '<p>$1</p>\n');
+				copyText = copyText.replace(/(.+?)(\n|$)+/g, '<p>$1</p>\n\n');
 
 			if (e.clipboardData)
 				e.clipboardData.setData('Text', copyText);
@@ -114,7 +115,7 @@ export default class MainPage extends Component {
 			// auto close modal if selected option
 			let cb = null;
 			if (this.state['auto-close'])
-				cb = this.props.closeModal;
+				cb = () => { this.props.toggleModal(false) };
 
 			// blink animation
 			Anims.blink(this.textArea.current, cb);
@@ -127,35 +128,37 @@ export default class MainPage extends Component {
 
 		return (
 			<div className='c-modal-main'>
-				<div className='c-modal__panel u-pr-20'>
+				<div className='c-modal__panel u-pr-28'>
 					<div className='o-media__fluid'>
-						<input id='pgraphs' type='number' min='1' max='10'
+						<input id='pgraphs' type='number' min='1' max='20'
 						name='paragraphs' value={this.state['paragraphs']}
-						onChange={this.inputChanged}/>
+						onChange={this.inputChanged} onFocus={this.inputSelect}/>
 						<label htmlFor='pgraphs'>Paragraphs</label>
 
 						<input id='words' type='number' min='1' max='500' step='50'
 						name='words' value={this.state['words']}
-						onChange={this.inputChanged}/>
+						onChange={this.inputChanged} onFocus={this.inputSelect}/>
 						<label htmlFor='words'>Words</label>
 					</div>
 
 					<button className={`c-modal-main__copy
 					${(selectedCopy) ? 'c-modal-main__copy--selected' : ''}`}
 					onClick={this.copyText}>
+						<img className='u-mr-8' src={chrome.extension.getURL('icons/copy-icon.svg')}/>
 						{(selectedCopy) ? 'Copy select' : 'Copy all'}
 					</button>
 				</div>
 
-				<div className='c-modal__panel u-pv-12'>
+				<div className='c-modal__panel u-pv-8 u-pr-28'>
 					<div className='o-media__fluid'>
-						<input id='include-p' type='checkbox' name='include-ptags'
-						defaultChecked={this.state['include-ptags']} onClick={this.inputChanged}/>
+						<input id='include-p' type='checkbox' name='include-ptags' value={!this.state['include-ptags']}
+						checked={this.state['include-ptags']} onClick={this.inputChanged}/>
 						<label htmlFor='include-p' className='u-mr-32'>include &lt;p&gt; tags</label>
 					</div>
 
 					<button className='c-modal-main__settings u-ph-12'
 					onClick={() => routeStore.setRoute('/settings')}>
+						<img className='u-mr-8' src={chrome.extension.getURL('icons/gear-icon.svg')}/>
 						Settings
 					</button>
 				</div>
@@ -163,7 +166,10 @@ export default class MainPage extends Component {
 				<div className={`c-modal-main__textarea
 					${(selectedCopy) ? 'c-modal-main__textarea--selected' : ''}`}>
 
-					<div className='c-modal-main__label'>Generated Paragraphs</div>
+					<div className='c-modal-main__label'>
+						<img className='u-mr-12' src={chrome.extension.getURL('icons/clip-icon.svg')}/>
+						{`${this.state['paragraphs']} paragraphs with ${this.state['words']} words each`}
+					</div>
 
 					<textarea readOnly spellCheck='false'
 					ref={this.textArea}

@@ -4,6 +4,10 @@ import { inject, observer } from 'mobx-react';
 @inject('routeStore', 'settingsStore')
 @observer
 export default class SettingsPage extends Component {
+	state = {
+		...this.props.settingsStore.settings
+	};
+
 	componentWillMount() {
 		this.props.settingsStore.resetChanges();
 	}
@@ -11,12 +15,18 @@ export default class SettingsPage extends Component {
 	handleChange = ({target}, value) => {
 		const key = target.name;
 
+		if (target.min) target.value = Math.max(target.min, target.value);
+		if (target.max) target.value = Math.min(target.max, target.value);
+
 		// we (value !== false) b/c we
 		// don't want booleans to pass
 		if (!value && value !== false)
 			value = target.value;
 		this.props.settingsStore.commitChange(key, value);
+		this.setState({...this.props.settingsStore.changes});
 	}
+
+	inputSelect = ({target}) => {target.select();}
 
 	saveChange = () => {
 		if (this.props.settingsStore.hasChanges)
@@ -56,15 +66,15 @@ export default class SettingsPage extends Component {
 							{/* Paragraphs */}
 							<input id='pgraphs' name='paragraphs'
 							type='number' min='1' max='15'
-							defaultValue={settings['paragraphs']}
-							onChange={this.handleChange}/>
+							value={this.state['paragraphs']}
+							onChange={this.handleChange} onFocus={this.inputSelect}/>
 							<label htmlFor='pgraphs'>Paragraphs</label>
 
 							{/* Words */}
 							<input id='words' name='words'
 							type='number' min='1' max='500' step='50'
-							defaultValue={settings['words']}
-							onChange={this.handleChange}/>
+							value={this.state['words']}
+							onChange={this.handleChange} onFocus={this.inputSelect}/>
 							<label htmlFor='words'>Words</label>
 						</div>
 
@@ -83,13 +93,6 @@ export default class SettingsPage extends Component {
 							onChange={(e) => this.handleChange(e, e.target.checked)}/>
 							<label htmlFor='auto-close'>close extension on copy</label>
 						</div>
-					</div>
-
-					<div id='context-settings'>
-						<div className='c-modal-settings__label'>
-							Quick Paste Settings
-						</div>
-
 					</div>
 				</div>
 			</div>
